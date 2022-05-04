@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize')
 
-module.exports = class Hashtag extends Sequelize.Model{
+module.exports = class Image extends Sequelize.Model{
   static init(sequelize) {
     return super.init({
-      tag:{
+      imgUrl:{
         type: Sequelize.STRING(40),
         allowNull: false,
         unique: true,
@@ -13,8 +13,8 @@ module.exports = class Hashtag extends Sequelize.Model{
       sequelize,
       timestamps: true,
       underscored: false,
-      modelName: 'Hashtag',
-      tableName: 'hashtags',
+      modelName: 'Image',
+      tableName: 'images',
       paranoid: false,
       charset: 'utf8',
       collate: 'utf8_general_ci'
@@ -23,9 +23,7 @@ module.exports = class Hashtag extends Sequelize.Model{
     })
   }
   static associate(db) {
-    //post와 hashtag는 n:m 관계
-    //through는 생성할 테이블 이름
-    //postId와 hashTagId를 외래키로 생성한다
-    db.Hashtag.belongsToMany(db.Post, {through: 'PostHashtag'})
+
+    db.Image.belongsTo(db.Post)
   }
 }

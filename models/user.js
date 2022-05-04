@@ -23,7 +23,18 @@ module.exports = class User extends Sequelize.Model{
       bankType:{
         type: Sequelize.STRING(10),
         allowNull: true
-      }
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"), //이렇게 수정!
+     },
+     updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn("NOW"),
+     },
+
     }, {
       sequelize,
       timestamps: true,

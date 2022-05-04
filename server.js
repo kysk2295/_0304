@@ -14,6 +14,8 @@ const { redirect } = require('express/lib/response')
 const flash = require('flash')
 
 const Post = require('./models/post')
+const { User } = require('./models')
+const { user } = require('./config')
 
 
 var sequelize = require('./models').sequelize
@@ -87,6 +89,8 @@ app.post('/home',async (req,res)=>{
 
 
 })
+
+
 
 app.post('/login',(req,res)=>{
     const param = [req.body.email,req.body.password]
@@ -197,6 +201,32 @@ app.post('/register',async(req,res)=>{
         return res.redirect('/register')
     }
 
+})
+
+app.post('/upload', (req,res)=>{
+    const param = [req.body.artistName, req.body.productName, req.body.link, req.body.desc, req.body.price, req.body.category]
+    const tags=[req.body.tags]
+    const urlList=[req.body.imgUrl]
+
+    console.log(req.body.tags)
+    console.log(req.body.imgUrl)
+
+    conn.query("INSERT INTO posts (`artistName`, `productName`, `link`, `desc`, `price`, `category`) values(?,?,?,?,?,?)", param,(err,row)=>{
+        if(err) console.log(err)
+
+        else
+        {
+            tags.forEach(element => {
+                conn.query("INSERT INTO hashtags (`tag`) values(?)", element, (err,row)=>{
+                    if(err)
+                        console.log(err)
+                })
+            });
+
+        }
+
+        return res.send('success')
+    })
 })
 
 app.post('/logout',(req,res)=>{

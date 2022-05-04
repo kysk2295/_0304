@@ -11,22 +11,39 @@ module.exports = class Post extends Sequelize.Model{
         type: Sequelize.STRING(40),
         allowNull: false,
       },
-      thumbnailUrl:{
-        type: Sequelize.STRING,
+      link:{
+        type: Sequelize.STRING(40),
         allowNull: false,
       },
-      imgUrl: {
-        type: Sequelize.STRING,
+      desc:{
+        type: Sequelize.STRING(40),
         allowNull: false,
-        get() {
-       return this.getDataValue('imgUrl').split(';')
-       },
-      set(val)
-      {
-      this.setDataValue('imgUrl',Array.isArray(val) ? val.join(','):val);
+      },
+      price:{
+        type: Sequelize.STRING(40),
+        allowNull: false,
+      },
+      category:{
+        type: Sequelize.STRING(40),
+        allowNull: false,
+      },
 
-    }
-      },
+      // thumbnailUrl:{
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
+    //   imgUrl: {
+    //     type: Sequelize.STRING,
+    //     allowNull: false,
+    //     get() {
+    //    return this.getDataValue('imgUrl').split(';')
+    //    },
+    //   set(val)
+    //   {
+    //   this.setDataValue('imgUrl',Array.isArray(val) ? val.join(','):val);
+
+    // }
+    //   },
 
     }, {
       sequelize,
@@ -44,6 +61,7 @@ module.exports = class Post extends Sequelize.Model{
   static associate(db) {
     //1:n 관계
     db.Post.belongsTo(db.User)
+    db.Post.hasMany(db.Image)
     //n:M 관계
     db.Post.belongsToMany(db.Hashtag, {through: 'PostHashtag'})
 
